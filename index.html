@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Romântico</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #fce4ec;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      color: #d81b60;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .question {
+      font-size: 1.2em;
+      margin: 20px 0;
+    }
+
+    .answers button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #d81b60;
+      color: #fff;
+    }
+
+    .answers button:hover {
+      background-color: #ad1457;
+    }
+
+    .lives {
+      margin: 20px;
+      font-size: 1.2em;
+      color: #880e4f;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #004d40;
+    }
+
+    .wrong {
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .timer {
+      font-size: 1.2em;
+      color: #d81b60;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Quiz Romântico</h1>
+    <div id="days-counter"></div>
+    <div class="timer" id="timer">Tempo restante: 30s</div>
+    <div class="question" id="question"></div>
+    <div class="answers" id="answers"></div>
+    <div class="lives" id="lives"></div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Quem falou 'eu te amo' primeiro?",
+        options: ["Você", "Eu", "Ambos ao mesmo tempo", "Durante uma briga", "Por mensagem de texto"],
+        correct: "Eu",
+        wrongMessage: "Mentirosaaaaaaaaaaaaaaaaaaaa skksksks foi sem querer isso aí rummmmm", // Mensagem específica se a resposta errada for "Você"
+      },
+      {
+        question: "Onde foi o nosso primeiro beijo?",
+        options: ["Esquina", "Banquinho", "Pracinha", "na minha casa", "Auditorio"],
+        correct: "Banquinho",
+      },
+      {
+        question: "Qual é o meu prato favorito que você faz que eu amo?",
+        options: ["Carne picadinha", "Macarrão", "Arroz", "Musse de maracuja", "Todas alternativas corretas"],
+        correct: "Todas alternativas corretas",
+      },
+      {
+        question: "Qual a nossa serie ou filme favorita?",
+        options: ["Lucifer", "Supernatural"],
+        correct: "Supernatural",
+      },
+      {
+        question: "Qual nosso hobby favorito?",
+        options: ["Caminhada", "Voltinha", "Passeio", "Sair date", "Andar de bike"],
+        correct: "Voltinha",
+      },
+      {
+        question: "Quantos dias já estamos juntos desde 26 de abril de 2022?",
+        options: ["860", "menos de 950 ", "entre 962 e 970", "Mais de 978", "Mais de 959"],
+        correct: "Mais de 959", // Atualizado dinamicamente
+      },
+      {
+        question: "Qual sobremesa é a nossa favorita?",
+        options: ["Pudim", "Musse de Maracujá", "Bolo de Chocolate", "Sorvete", "Torta de Limão"],
+        correct: "Musse de Maracujá",
+      },
+      {
+        question: "Como eu te chamo sem querer, mas em minha defesa eu te amo dmais e n consigo parar ksksksksk?",
+        options: ["Linda de papai", "Mor", "Dengo", "Princesa", "Gatinha"],
+        correct: "Linda de papai",
+      },
+      {
+        question: "Qual é a minha série ou programa de TV favorito que você acha que é de velho?",
+        options: ["The Noite", "Programa do Ratinho", "Roda a Roda", "Globo Rural", "Jornal Nacional"],
+        correct: "The Noite",
+      },
+    ];
+
+    let currentQuestion = 0;
+    let lives = 2; // Alterado para 2 vidas
+    let timer;
+    let timeLeft = 30;
+
+    function updateCounter() {
+      const startDate = new Date("2022-04-26");
+      const today = new Date();
+      const difference = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+      document.getElementById("days-counter").innerText = `Estamos juntos há ${difference} dias! ❤️`;
+    }
+
+    function startTimer() {
+      timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").innerText = `Tempo restante: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          checkAnswer(null);
+        }
+      }, 1000);
+    }
+
+    function loadQuestion() {
+      if (currentQuestion >= questions.length) {
+        document.getElementById("question").innerText = "Parabéns, você completou o quiz!";
+        document.getElementById("answers").innerHTML = "<p>Te amo! ❤️</p>";
+        // Redirecionar para Contador.html após concluir o quiz
+        setTimeout(() => {
+          window.location.href ="Contador/index.html";  // Aqui estamos redirecionando para a página Contador.html
+        }, 2000); // 2 segundos antes de redirecionar
+        return;
+      }
+
+      const question = questions[currentQuestion];
+      document.getElementById("question").innerText = question.question;
+      const answersDiv = document.getElementById("answers");
+      answersDiv.innerHTML = "";
+
+      question.options.forEach((option) => {
+        const button = document.createElement("button");
+        button.innerText = option;
+        button.onclick = () => checkAnswer(option);
+        answersDiv.appendChild(button);
+      });
+
+      timeLeft = 15; // Reset timer for each question
+      startTimer();
+    }
+
+    function checkAnswer(answer) {
+      clearInterval(timer);
+      const question = questions[currentQuestion];
+      if (answer === question.correct) {
+        document.getElementById("result").innerText = "Correto! ❤️";
+        currentQuestion++;
+        loadQuestion();
+      } else {
+        lives--;
+        if (answer === "Você") {
+          document.getElementById("result").innerText = question.wrongMessage; // Mensagem específica para "Você"
+        } else {
+          document.getElementById("result").innerText = "Errado! 😢";
+        }
+        if (lives <= 0) {
+          document.getElementById("question").innerText = "Você perdeu todas as vidas! 😭";
+          document.getElementById("answers").innerHTML = "<p>Tente de novo! Te amo! ❤️</p>";
+          return;
+        }
+      }
+      document.getElementById("lives").innerText = `Vidas restantes: ${lives}`;
+    }
+
+    updateCounter();
+    loadQuestion();
+    document.getElementById("lives").innerText = `Vidas restantes: ${lives}`;
+  </script>
+</body>
+</html>

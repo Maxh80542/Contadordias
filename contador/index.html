@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contador Romântico</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #fce4ec;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      color: #d81b60;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .counter-container {
+      background-color: #ffffff;
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .counter {
+      font-size: 2em;
+      color: #d81b60;
+      font-weight: bold;
+    }
+
+    .photos {
+      width: 100%;
+      height: 300px;
+      display: flex;
+      overflow: hidden;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .photo-slide {
+      display: flex;
+      width: 1300%; /* 100% * 13 imagens */
+      animation: slide 52s linear infinite; /* Animar 13 imagens em 52 segundos */
+    }
+
+    .photos img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @keyframes slide {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .message {
+      font-size: 1.5em;
+      color: #004d40;
+      margin-top: 30px;
+      font-style: italic;
+      padding: 0 10px;
+    }
+
+    .button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #d81b60;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .button:hover {
+      background-color: #ad1457;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Contador de Dias Juntos</h1>
+    <div class="photos">
+      <div class="photo-slide">
+        <img src="foto 1.jpeg" alt="Foto 1">
+        <img src="foto 2.jpeg" alt="Foto 2">
+        <img src="foto 3.jpeg" alt="Foto 3">
+        <img src="foto 4.jpeg" alt="Foto 4">
+        <img src="foto 5.jpeg" alt="Foto 5">
+        <img src="foto 6.jpeg" alt="Foto 6">
+        <img src="foto 7.jpeg" alt="Foto 7">
+        <img src="foto 8.jpeg" alt="Foto 8">
+        <img src="foto 9.jpeg" alt="Foto 9">
+        <img src="foto 10.jpeg" alt="Foto 10">
+        <img src="foto 11.jpeg" alt="Foto 11">
+        <img src="foto 12.jpeg" alt="Foto 12">
+        <img src="foto 13.jpeg" alt="Foto 13">
+      </div>
+    </div>
+    <div class="counter-container">
+      <div class="counter" id="days-counter"></div>
+      <div class="message" id="special-message"></div>
+    </div>
+    <button class="button" onclick="reloadPage()">Refazer o Quiz</button>
+  </div>
+
+  <script>
+    // Função para calcular os dias
+    function updateCounter() {
+      const startDate = new Date("2022-04-26");
+      const today = new Date();
+      const difference = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+      document.getElementById("days-counter").innerText = `Já se passaram ${difference} dias! ❤️`;
+      
+      const message = `Faz ${difference} dias que sou a pessoa mais feliz do mundo. Obrigado por existir na minha vida, eu te amo menina mais chata de todas hihihi, mas não viveria sem seu amor. tenho muito orgulho de voce,muito mesmoooo, estarei sempre aqui para voce, eu te amo meu denguinho hihihi! ❤️`;
+      document.getElementById("special-message").innerText = message;
+    }
+
+    // Função para recarregar a página (caso você queira refazer o quiz)
+    function reloadPage() {
+      window.location.href = "quiz.html";  // Mude para o nome do seu arquivo do quiz
+    }
+
+    // Atualiza o contador assim que a página carregar
+    window.onload = function() {
+      updateCounter();
+    };
+  </script>
+</body>
+</html>
